@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model table_ {
+  id     Int     @id @default(autoincrement())
+  numero Int     @unique
+  qrToken String? @unique // Optionnel pour migration
+  commandes commande[]
+}
+
+model plat {
+  id          Int     @id @default(autoincrement())
+  nom         String
+  description String?
+  prix        Float
+  categorie   String
+  disponible  Boolean @default(true)
+  image       String? // URL ou chemin de l'image du plat
+
+  commandes   commandePlat[]
+}
+
+model admin {
+  id              String  @id @default(uuid())
+  nom             String 
+  email          String? @unique
+  motDePasseHash  String
+  role            String  @default("admin")
+  dateCreation   DateTime @default(now())
+  dateModification DateTime @default(now())
+  dateSuppression DateTime?
+}
+
+model commande {
+  id            Int       @id @default(autoincrement())
+  tableId       Int
+  prixtotal     Float
+  statut        String
+  dateCommande  DateTime  @default(now())
+
+  table         table_     @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  plats         commandePlat[]
+}
+
+model commandePlat {
+  commandeId  Int
+  platId      Int
+  quantite    Int @default(1)
+
+  commande    commande @relation(fields: [commandeId], references: [id])
+  plat        plat     @relation(fields: [platId], references: [id])
+
+  @@id([commandeId, platId])
+}
