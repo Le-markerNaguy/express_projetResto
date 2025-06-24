@@ -84,7 +84,7 @@ export const getStats = async (req: Request, res: Response) => {
     const orders = await prisma.commande.findMany({
       select: { prixtotal: true },
     })
-    const totalSales = orders.reduce((sum, order) => sum + order.prixtotal, 0)
+    const totalSales = orders.reduce((sum: number, order: { prixtotal: number }) => sum + order.prixtotal, 0)
 
     // Nombre de plats
     const totalDishes = await prisma.plat.count()
@@ -103,7 +103,7 @@ export const getStats = async (req: Request, res: Response) => {
       served: 0,
     }
 
-    statusCounts.forEach(item => {
+    statusCounts.forEach((item: any) => {
       const key = item.statut
       statusMap[key] = item._count.statut
     })

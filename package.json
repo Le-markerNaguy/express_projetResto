@@ -5,8 +5,9 @@
   "main": "app.ts",
   "type": "commonjs",
   "scripts": {
+    "prisma:generate": "prisma generate",
+    "build": "prisma generate && tsc",
     "dev": "nodemon",
-    "build": "tsc",
     "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

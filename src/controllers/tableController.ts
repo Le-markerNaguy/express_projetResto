@@ -8,7 +8,7 @@ export const getAllTables = async (_req: Request, res: Response): Promise<void> 
     const tables = await prisma.table_.findMany();
     // Pour chaque table, générer dynamiquement l'image QR code (base64)
     const tablesWithQr = await Promise.all(
-      tables.map(async (table) => {
+      tables.map(async (table: any) => {
         if (!table.qrToken) return { ...table, qrCodeImage: null };
         const qrUrl = `https://tonsite.com/?table=${table.qrToken}`;
         const qrCodeImage = await QRCode.toDataURL(qrUrl);
