@@ -17,7 +17,7 @@ const app = express();
 
 // CORS configuration: Allow React frontends to access the API
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:3001' ,'https://projet-resto-frontend.vercel.app/'], // Frontend addresses
+  origin: ['http://localhost:3000', 'http://localhost:3001' ,'https://projet-resto-frontend.vercel.app'], // Frontend addresses
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true, // Allow cookies/authentication
 }));
