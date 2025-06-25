@@ -6,7 +6,7 @@ import {
   loginAdmin,
   getStats
 } from '../controllers/adminController';
-import { authenticateAdmin } from '../middleware/authMiddleware';
+import authenticateAdmin from '../middleware/authMiddleware';
 
 const router = express.Router();
 

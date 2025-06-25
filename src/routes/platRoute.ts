@@ -5,7 +5,7 @@ import {
   updateDish,
   deleteDish,
 } from "../controllers/platController";
-import { authenticateAdmin } from "../middleware/authMiddleware";
+import authenticateAdmin from "../middleware/authMiddleware";
 
 
 const router = Router();
