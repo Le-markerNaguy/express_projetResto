@@ -5,7 +5,7 @@ import {
   updateOrderStatus,
   getWeeklyRevenue, // Assurez-vous que cette fonction est définie dans votre contrôleur
 } from "../controllers/commandeController";
-import { authenticateAdmin } from '../middleware/authMiddleware';
+import  authenticateAdmin  from '../middleware/authMiddleware';
 
 const router = Router();
 

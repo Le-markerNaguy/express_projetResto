@@ -37,5 +37,5 @@ app.use('/api/plats', platRoute);
 app.use('/api/tables', tableRoute);
 
 // Start the server
-const PORT = 4000;
+const PORT=process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`✅ Serveur sur http://localhost:${PORT}`));

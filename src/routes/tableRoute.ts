@@ -4,7 +4,7 @@ import {
   createTable,
   deleteTable,
 } from "../controllers/tableController"
-import { authenticateAdmin } from "../middleware/authMiddleware";
+import  authenticateAdmin  from "../middleware/authMiddleware";
 
 const router = Router();
 
