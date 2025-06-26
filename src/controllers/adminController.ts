@@ -20,7 +20,11 @@ export const getAllAdmins = async (_req: Request, res: Response): Promise<void> 
 };
 
 export const createAdmin = async (req: Request, res: Response): Promise<void> => {
-  const { nom,email , motDePasse } = req.body;
+  const { nom, email, motDePasse } = req.body;
+  if (!motDePasse || typeof motDePasse !== 'string' || motDePasse.trim() === '') {
+    res.status(400).json({ error: "Le mot de passe est requis et ne peut pas être vide." });
+    return;
+  }
   try {
     const motDePasseHash = await bcrypt.hash(motDePasse, 10);
     const admin = await prisma.admin.create({
@@ -32,9 +36,9 @@ export const createAdmin = async (req: Request, res: Response): Promise<void> =>
       email: admin.email,
       role: admin.role,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur dans createAdmin:', error);
-    res.status(400).json({ error: "Erreur lors de la création de l'admin." });
+    res.status(400).json({ error: "Erreur lors de la création de l'admin.", details: error?.message || error });
   }
 };
 

@@ -6,36 +6,36 @@ import QRCode from 'qrcode';
 export const getAllTables = async (_req: Request, res: Response): Promise<void> => {
   try {
     const tables = await prisma.table_.findMany();
-    // Pour chaque table, générer dynamiquement l'image QR code (base64)
+    const frontendUrl = process.env.FRONTEND_URL;
     const tablesWithQr = await Promise.all(
       tables.map(async (table: any) => {
         if (!table.qrToken) return { ...table, qrCodeImage: null };
-        const qrUrl = `https://tonsite.com/?table=${table.qrToken}`;
+        const qrUrl = `${frontendUrl}/?table=${table.qrToken}`;
         const qrCodeImage = await QRCode.toDataURL(qrUrl);
         return { ...table, qrCodeImage };
       })
     );
     res.json(tablesWithQr);
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la récupération des tables." });
+    console.error('Erreur dans getAllTables:', error);
+    res.status(500).json({ error: "Erreur lors de la récupération des tables.", details: error instanceof Error ? error.message : error });
   }
 };
 
 export const createTable = async (req: Request, res: Response): Promise<void> => {
   const { numero } = req.body;
   try {
-    // Générer un token unique pour la table
     const qrToken = uuidv4();
-    // Créer la table avec le token
     const table = await prisma.table_.create({ data: { numero, qrToken } });
-    // Générer l'URL à encoder dans le QR code
-    const qrUrl = `https://tonsite.com/?table=${qrToken}`;
-    // Générer le QR code (base64)
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (!frontendUrl) {
+      throw new Error('FRONTEND_URL non défini dans les variables d\'environnement');
+    }
+    const qrUrl = `${frontendUrl}/?table=${qrToken}`;
     const qrCodeImage = await QRCode.toDataURL(qrUrl);
-    // Retourner la table et l'image du QR code
     res.status(201).json({ ...table, qrCodeImage });
   } catch (error) {
-    res.status(400).json({ error: "Erreur lors de la création de la table." });
+    res.status(400).json({ error: "Erreur lors de la création de la table.", details: error instanceof Error ? error.message : error });
   }
 };
 
