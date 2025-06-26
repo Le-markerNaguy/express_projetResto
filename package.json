@@ -5,11 +5,11 @@
   "main": "app.ts",
   "type": "commonjs",
   
-  "scripts": {
+"scripts": {
     "prisma:generate": "prisma generate",
-    "dev": "ts-node-dev src/app.ts",
+    "dev": "nodemon ",
     "build": "prisma generate && tsc",
-    "start": "node dist/app.js",
+    "start": "ts-node src/app.ts --exec ts-node-dev --respawn --transpile-only",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
