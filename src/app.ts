@@ -33,6 +33,10 @@ app.get('/', (req, res) => {
 });
 
 // Register API routes
+console.log('Type commandeRoute:', typeof commandeRoute);
+console.log('Type adminRoute:', typeof adminRoute);
+console.log('Type platRoute:', typeof platRoute);
+console.log('Type tableRoute:', typeof tableRoute);
 app.use('/api/commandes', commandeRoute);
 app.use('/api/admin', adminRoute);
 app.use('/api/plats', platRoute);
