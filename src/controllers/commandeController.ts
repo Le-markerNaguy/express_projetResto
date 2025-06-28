@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma";
 import { Request, Response } from "express";
+import { io } from "../app";
 
 // src/controllers/OrderController.ts
 export const getAllOrders = async (_req: Request, res: Response): Promise<void> => {
@@ -80,6 +81,9 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         }
       }
     });
+    // --- EMISSION SOCKET.IO ---
+    io.emit("new-order", newOrder);
+    // ---
     res.status(201).json(newOrder);
   } catch (error) {
     console.error('Erreur lors de la création de la commande:', error);
