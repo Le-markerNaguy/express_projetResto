@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 import {
   getAllDishes,
   createDish,
@@ -8,7 +8,7 @@ import {
 import authenticateAdmin from "../middleware/authMiddleware";
 
 
-const router = Router();
+const router = express.Router();
 
 // Plats
 router.get("/", getAllDishes);

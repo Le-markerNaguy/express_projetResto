@@ -1,4 +1,4 @@
-import { Router } from "express";
+import express from "express";
 import {
   getAllTables,
   createTable,
@@ -6,7 +6,7 @@ import {
 } from "../controllers/tableController"
 import  authenticateAdmin  from "../middleware/authMiddleware";
 
-const router = Router();
+const router = express.Router();
 
 // Tables
 router.get("/", getAllTables);

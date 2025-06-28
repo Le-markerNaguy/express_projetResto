@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
   getAllOrders,
   createOrder,
@@ -7,7 +7,7 @@ import {
 } from "../controllers/commandeController";
 import  authenticateAdmin  from '../middleware/authMiddleware';
 
-const router = Router();
+const router = express.Router();
 
 // Commandes
 router.get("/",authenticateAdmin , getAllOrders); // Récupérer toutes les commandes
