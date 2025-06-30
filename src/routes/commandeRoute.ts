@@ -5,6 +5,7 @@ import {
   updateOrderStatus,
   getWeeklyRevenue, // Assurez-vous que cette fonction est définie dans votre contrôleur
 } from "../controllers/commandeController";
+import { getDailyRevenue } from "../controllers/revenueController";
 import  authenticateAdmin  from '../middleware/authMiddleware';
 
 const router = express.Router();
@@ -14,4 +15,6 @@ router.get("/",authenticateAdmin , getAllOrders); // Récupérer toutes les comm
 router.post("/", createOrder); // Créer une nouvelle commande  
 router.put("/:id",authenticateAdmin, updateOrderStatus); // Mettre à jour le statut d'une commande
 router.get("/revenue-week",authenticateAdmin,getWeeklyRevenue)
+router.get("/revenue-daily", authenticateAdmin, getDailyRevenue)
+
 export default router;
