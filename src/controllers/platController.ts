@@ -8,7 +8,12 @@ export const getAllDishes = async (_req: Request, res: Response): Promise<void> 
     res.json(dishes);
   } catch (error) {
     console.error("Erreur dans getAllDishes:", error);
-    res.status(500).json({ error: "Erreur lors de la récupération des plats.", details: error instanceof Error ? error.message : error });
+    // Log complet pour Render
+    if (error instanceof Error) {
+      res.status(500).json({ error: "Erreur lors de la récupération des plats.", details: error.message, stack: error.stack });
+    } else {
+      res.status(500).json({ error: "Erreur lors de la récupération des plats.", details: error });
+    }
   }
 };
 
