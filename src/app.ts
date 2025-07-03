@@ -60,7 +60,8 @@ export const io = new Server(server, {
       "http://localhost:3001",
       "https://projet-resto-frontend.vercel.app"
     ],
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true
   }
 });
 
