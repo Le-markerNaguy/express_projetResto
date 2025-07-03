@@ -49,6 +49,7 @@ model commande {
   prixtotal     Float
   statut        String
   dateCommande  DateTime  @default(now())
+  numeroDuJour  Int ?      // Ajout du compteur journalier
 
   table         table_     @relation(fields: [tableId], references: [id], onDelete: Cascade)
   plats         commandePlat[]

@@ -50,13 +50,29 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
       total += plat.prix * p.quantite;
     }
 
+    // --- LOGIQUE DU COMPTEUR JOURNALIER ---
+    // On récupère le début de la journée (minuit)
+    const now = new Date();
+    const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    // On compte les commandes du jour
+    const commandesDuJour = await prisma.commande.count({
+      where: {
+        dateCommande: {
+          gte: startOfDay
+        }
+      }
+    });
+    const numeroDuJour = commandesDuJour + 1;
+    // --- FIN LOGIQUE DU COMPTEUR JOURNALIER ---
+
     console.log('Création de la commande avec:', {
       tableId,
       prixtotal: total,
       plats: plats.map((p: any) => ({
         platId: p.id,
         quantite: p.quantite,
-      }))
+      })),
+      numeroDuJour
     });
 
     const newOrder = await prisma.commande.create({
@@ -64,6 +80,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         tableId,
         prixtotal: total,
         statut: "en attente",
+        numeroDuJour, // Ajout du compteur journalier
         plats: {
           create: plats.map((p: any) => ({
             platId: p.id,
