@@ -49,7 +49,8 @@ model commande {
   prixtotal     Float
   statut        String
   dateCommande  DateTime  @default(now())
-  numeroDuJour  Int ?      // Ajout du compteur journalier
+  numeroDuJour  Int?
+  token         String   @unique // Token unique pour chaque commande (optionnel pour migration)
 
   table         table_     @relation(fields: [tableId], references: [id], onDelete: Cascade)
   plats         commandePlat[]

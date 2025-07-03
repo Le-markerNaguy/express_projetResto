@@ -27,16 +27,6 @@ app.use(cors({
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Middleware global pour forcer les headers CORS sur toutes les routes (y compris /socket.io/*)
-app.use((req: any, res: any, next: any) => {
-  res.header("Access-Control-Allow-Origin", "https://projet-resto-frontend.vercel.app");
-  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS,PATCH");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Credentials", "true");
-  if (req.method === "OPTIONS") return res.sendStatus(200);
-  next();
-});
-
 // Root endpoint
 app.get('/', (req, res) => {
   res.send('hello world');

@@ -1,5 +1,6 @@
 import prisma from "../lib/prisma";
 import { Request, Response } from "express";
+import { randomUUID } from "crypto";
 
 // src/controllers/OrderController.ts
 export const getAllOrders = async (_req: Request, res: Response): Promise<void> => {
@@ -51,10 +52,8 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
     }
 
     // --- LOGIQUE DU COMPTEUR JOURNALIER ---
-    // On récupère le début de la journée (minuit)
     const now = new Date();
     const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    // On compte les commandes du jour
     const commandesDuJour = await prisma.commande.count({
       where: {
         dateCommande: {
@@ -65,6 +64,9 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
     const numeroDuJour = commandesDuJour + 1;
     // --- FIN LOGIQUE DU COMPTEUR JOURNALIER ---
 
+    // --- Génération du token unique ---
+    const token = randomUUID();
+
     console.log('Création de la commande avec:', {
       tableId,
       prixtotal: total,
@@ -72,7 +74,8 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         platId: p.id,
         quantite: p.quantite,
       })),
-      numeroDuJour
+      numeroDuJour,
+      token
     });
 
     const newOrder = await prisma.commande.create({
@@ -80,7 +83,8 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         tableId,
         prixtotal: total,
         statut: "en attente",
-        numeroDuJour, // Ajout du compteur journalier
+        numeroDuJour,
+        token, // Ajout du token unique
         plats: {
           create: plats.map((p: any) => ({
             platId: p.id,
@@ -104,7 +108,11 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
     res.status(201).json(newOrder);
   } catch (error) {
     console.error('Erreur lors de la création de la commande:', error);
-    res.status(400).json({ error: "Erreur lors de la création de la commande." });
+    if (error instanceof Error) {
+      res.status(400).json({ error: "Erreur lors de la création de la commande.", details: error.message, stack: error.stack });
+    } else {
+      res.status(400).json({ error: "Erreur lors de la création de la commande." });
+    }
   }
 };
 
