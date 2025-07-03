@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto';
 
 async function main() {
   const commandes = await prisma.commande.findMany({
-    where: { token: null }
+    where: { token: undefined }
   });
 
   for (const commande of commandes) {
