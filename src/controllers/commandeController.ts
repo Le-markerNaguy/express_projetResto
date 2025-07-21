@@ -22,8 +22,7 @@ export const getAllOrders = async (_req: Request, res: Response): Promise<void> 
 };
 
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
-  const { tableId, plats } = req.body;
-  console.log('createOrder - Données reçues:', { tableId, plats });
+  const { tableId, plats, nomClient } = req.body;
   
   try {
     // Vérifier si la table existe
@@ -85,6 +84,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         statut: "en attente",
         numeroDuJour,
         token, // Ajout du token unique
+        nomClient: nomClient || null, // Nom du client (optionnel)
         plats: {
           create: plats.map((p: any) => ({
             platId: p.id,

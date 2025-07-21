@@ -9,7 +9,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL") // Utilisé pour les migrations
+  directUrl = env("DIRECT_URL")
 }
 
 
@@ -51,6 +51,7 @@ model commande {
   dateCommande  DateTime  @default(now())
   numeroDuJour  Int?
   token         String   @unique // Token unique pour chaque commande (optionnel pour migration)
+  nomClient     String?  // Nom du client (optionnel)
 
   table         table_     @relation(fields: [tableId], references: [id], onDelete: Cascade)
   plats         commandePlat[]
